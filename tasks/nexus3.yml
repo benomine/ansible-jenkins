@@ -1,0 +1,20 @@
+---
+- name: Create Nexus3 folder.
+  ansible.builtin.file:
+    path: ~/nexus3
+    state: directory
+    mode: 0755
+  become: false
+
+- name: Copy Nexus3 docker-compose template.
+  ansible.builtin.template:
+    src: templates/nexus3-docker-compose.yml.j2
+    dest: ~/nexus3/docker-compose.yml
+    mode: '0640'
+  become: false
+
+- name: Ensure Nexus3 is running.
+  community.docker.docker_compose:
+    project_src: ~/nexus3
+    build: false
+  become: false

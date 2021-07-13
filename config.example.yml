@@ -1,0 +1,12 @@
+---
+postgres_enable: false
+postgres_hostname: postgres
+
+jenkins_enable: true
+jenkins_hostname: jenkins
+
+sonarqube_enable: false
+sonarqube_hostname: sonarqube
+
+nexus3_enable: false
+nexus3_hostname: nexus3

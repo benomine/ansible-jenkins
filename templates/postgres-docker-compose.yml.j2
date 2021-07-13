@@ -1,0 +1,25 @@
+# {{ ansible_managed }}
+---
+version: "3"
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    hostname: '{{ postgres_hostname }}'
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+      - POSTGRES_DB=sonar
+    volumes:
+      - postgres:/var/lib/postgresql
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres:
+  postgres_data:

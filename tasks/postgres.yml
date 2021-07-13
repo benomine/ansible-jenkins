@@ -1,0 +1,20 @@
+---
+- name: Create Postgres folder.
+  ansible.builtin.file:
+    path: ~/postgres
+    state: directory
+    mode: 0755
+  become: false
+
+- name: Copy postgres docker-compose template.
+  ansible.builtin.template:
+    src: templates/postgres-docker-compose.yml.j2
+    dest: ~/postgres/docker-compose.yml
+    mode: '0640'
+  become: false
+
+- name: Ensure postgres is running.
+  community.docker.docker_compose:
+    project_src: ~/postgres
+    build: false
+  become: false

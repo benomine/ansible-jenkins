@@ -1,0 +1,31 @@
+- hosts: jenkins-nas
+  become: true
+
+  pre_tasks:
+    - name: Load configuration.
+      ansible.builtin.include_vars: config.yml
+
+    - name: Ensure apt cache is up to date.
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+  tasks:
+    - name: Setup Docker.
+      ansible.builtin.import_tasks: tasks/docker.yml
+
+    - name: Set up Postgres server.
+      ansible.builtin.import_tasks: tasks/postgres.yml
+      when: postgres_enable
+
+    - name: Set up Jenkins server.
+      ansible.builtin.import_tasks: tasks/jenkins.yml
+      when: jenkins_enable
+
+    - name: Set up Sonarqube server.
+      ansible.builtin.import_tasks: tasks/sonarqube.yml
+      when: sonarqube_enable
+
+    - name: Set up Nexus3 server.
+      ansible.builtin.import_tasks: tasks/nexus3.yml
+      when: nexus3_enable

@@ -1,0 +1,20 @@
+---
+- name: Create sonarqube folder.
+  ansible.builtin.file:
+    path: ~/sonarqube
+    state: directory
+    mode: 0755
+  become: false
+
+- name: Copy sonarqube docker-compose template.
+  ansible.builtin.template:
+    src: templates/sonarqube-docker-compose.yml.j2
+    dest: ~/sonarqube/docker-compose.yml
+    mode: '0640'
+  become: false
+
+- name: Ensure sonarqube is running.
+  community.docker.docker_compose:
+    project_src: ~/sonarqube
+    build: false
+  become: false
