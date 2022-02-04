@@ -1,0 +1,20 @@
+# {{ ansible_managed }}
+---
+version: "3"
+
+services:
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto
+    hostname: '{{ mosquitto_hostname }}'
+    ports:
+      - "1883:1883"
+      - "8883:8883"
+    expose:
+      - 1883
+      - 8883
+    volumes:
+      - '/home/ben/mosquitto/config:/mosquitto/config/'
+      - '/home/ben/mosquitto/data:/mosquitto/data'
+      - '/home/ben/mosquitto/log:/mosquitto/log'
+    restart: unless-stopped

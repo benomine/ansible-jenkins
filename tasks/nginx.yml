@@ -1,0 +1,20 @@
+---
+- name: Create nginx folder.
+  ansible.builtin.file:
+    path: ~/nginx
+    state: directory
+    mode: 0755
+  become: false
+
+- name: Copy nginx docker-compose template.
+  ansible.builtin.template:
+    src: templates/nginx-docker-compose.yml.j2
+    dest: ~/nginx/docker-compose.yml
+    mode: '0640'
+  become: false
+
+- name: Ensure nginx is running.
+  community.docker.docker_compose:
+    project_src: ~/nginx
+    build: false
+  become: false

@@ -1,0 +1,20 @@
+---
+- name: Create Home Assistant folder.
+  ansible.builtin.file:
+    path: ~/home_assistant
+    state: directory
+    mode: 0755
+  become: false
+
+- name: Copy Home Assistant docker-compose template.
+  ansible.builtin.template:
+    src: templates/home_assistant-docker-compose.yml.j2
+    dest: ~/home_assistant/docker-compose.yml
+    mode: '0640'
+  become: false
+
+- name: Ensure Home Assistant is running.
+  community.docker.docker_compose:
+    project_src: ~/home_assistant
+    build: false
+  become: false

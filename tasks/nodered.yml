@@ -1,0 +1,20 @@
+---
+- name: Create nodered folder.
+  ansible.builtin.file:
+    path: ~/nodered
+    state: directory
+    mode: 0755
+  become: false
+
+- name: Copy nodered docker-compose template.
+  ansible.builtin.template:
+    src: templates/nodered-docker-compose.yml.j2
+    dest: ~/nodered/docker-compose.yml
+    mode: '0640'
+  become: false
+
+- name: Ensure nodered is running.
+  community.docker.docker_compose:
+    project_src: ~/nodered
+    build: false
+  become: false

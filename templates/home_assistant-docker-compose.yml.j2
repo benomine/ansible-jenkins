@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+---
+version: "3"
+
+services:
+  home-assistant:
+    container_name: home-assistant
+    privileged: true
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    hostname: '{{ home_assistant_hostname }}'
+    ports:
+      - "8123:8123"
+    expose:
+      - "8123"
+    volumes:
+      - '/etc/localtime:/etc/localtime:ro'
+      - '/home/ben/ha/config:/config'
+    restart: unless-stopped

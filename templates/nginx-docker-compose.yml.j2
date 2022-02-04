@@ -1,0 +1,45 @@
+# {{ ansible_managed }}
+---
+version: "3"
+
+services:
+  nginx:
+    container_name: nginx 
+    image: 'jc21/nginx-proxy-manager:latest'
+    hostname: '{{ nginx_hostname }}'
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    expose:
+      - '80'
+      - '443'
+      - '81'
+    environment:
+      - DB_MYSQL_HOST=192.168.1.30
+      - DB_MYSQL_PORT=6306
+      - DB_MYSQL_USER="npm"
+      - DB_MYSQL_PASSWORD="npm"
+      - DB_MYSQL_NAME="npm"
+    volumes:
+      - '/home/ben/nginx/data:/data'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - './letsencrypt:/etc/letsencrypt'
+    restart: always
+    depends_on:
+      - mariadb
+  mariadb:
+    image: 'jc21/mariadb-aria:latest'
+    container_name: mariadb
+    ports:
+      - "6306:3306"
+    expose:
+      - "6306"
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD="npm"
+      - MYSQL_DATABASE="npm"
+      - MYSQL_USER="npm"
+      - MYSQL_PASSWORD="npm"
+    volumes:
+      - ./data/mysql:/var/lib/mysql

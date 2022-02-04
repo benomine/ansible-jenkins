@@ -1,0 +1,20 @@
+---
+- name: Create mariadb folder.
+  ansible.builtin.file:
+    path: ~/mariadb
+    state: directory
+    mode: 0755
+  become: false
+
+- name: Copy mariadb docker-compose template.
+  ansible.builtin.template:
+    src: templates/mariadb-docker-compose.yml.j2
+    dest: ~/mariadb/docker-compose.yml
+    mode: '0640'
+  become: false
+
+- name: Ensure mariadb is running.
+  community.docker.docker_compose:
+    project_src: ~/mariadb
+    build: false
+  become: false

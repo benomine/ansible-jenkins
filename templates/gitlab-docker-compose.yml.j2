@@ -1,0 +1,35 @@
+# {{ ansible_managed }}
+---
+version: "3"
+
+services:
+  gitlab:
+    container_name: gitlab
+    image: 'gitlab/gitlab-ce:latest'
+    hostname: '{{ gitlab_hostname }}'
+    ports:
+      - "7980:80"
+      - "6443:443"
+      - "4223:22"
+    expose:
+      - 7980
+      - 6443
+      - 4223
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+         external_url 'http://localhost'
+         gitlab_rails['gitlab_shell_ssh_port'] = 4223
+    volumes:
+      - '/certs/client:/certs/client'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - '/home/ben/gitlab/config:/etc/gitlab'
+      - '/home/ben/gitlab/logs:/var/log/gitlab'
+      - '/home/ben/gitlab/data:/var/opt/gitlab'
+    restart: unless-stopped
+  gitlab-runner:
+    image: gitlab/gitlab-runner:latest
+    container_name: 'gitlab-runner'
+    volumes:
+      - '/home/ben/gitlab/data/config-runner:/etc/gitlab-runner'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+

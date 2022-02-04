@@ -1,0 +1,20 @@
+---
+- name: Create portainer folder.
+  ansible.builtin.file:
+    path: ~/portainer
+    state: directory
+    mode: 0755
+  become: false
+
+- name: Copy portainer docker-compose template.
+  ansible.builtin.template:
+    src: templates/portainer-docker-compose.yml.j2
+    dest: ~/portainer/docker-compose.yml
+    mode: '0640'
+  become: false
+
+- name: Ensure portainer is running.
+  community.docker.docker_compose:
+    project_src: ~/portainer
+    build: false
+  become: false

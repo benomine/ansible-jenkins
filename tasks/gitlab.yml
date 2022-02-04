@@ -1,0 +1,20 @@
+---
+- name: Create Gitlab folder.
+  ansible.builtin.file:
+    path: ~/gitlab
+    state: directory
+    mode: 0755
+  become: false
+
+- name: Copy Gitlab docker-compose template.
+  ansible.builtin.template:
+    src: templates/gitlab-docker-compose.yml.j2
+    dest: ~/gitlab/docker-compose.yml
+    mode: '0640'
+  become: false
+
+- name: Ensure Gitlab is running.
+  community.docker.docker_compose:
+    project_src: ~/gitlab
+    build: false
+  become: false

@@ -18,6 +18,10 @@
       ansible.builtin.import_tasks: tasks/postgres.yml
       when: postgres_enable
 
+    - name: Set up Mariadb server.
+      ansible.builtin.import_tasks: tasks/mariadb.yml
+      when: mariadb_enable
+
     - name: Set up Jenkins server.
       ansible.builtin.import_tasks: tasks/jenkins.yml
       when: jenkins_enable
@@ -29,3 +33,28 @@
     - name: Set up Nexus3 server.
       ansible.builtin.import_tasks: tasks/nexus3.yml
       when: nexus3_enable
+    
+    - name: Set up Home Assistant.
+      ansible.builtin.import_tasks: tasks/home_assistant.yml
+      when: home_assistant_enable
+
+    - name: Set up Nginx.
+      ansible.builtin.import_tasks: tasks/nginx.yml
+      when: nginx_enable
+
+    - name: Set up Mosquitto.
+      ansible.builtin.import_tasks: tasks/mosquitto.yml
+      when: mosquitto_enable
+
+    - name: Set up NodeRed.
+      ansible.builtin.import_tasks: tasks/nodered.yml
+      when: nodered_enable
+
+    - name: Set up Portainer.
+      ansible.builtin.import_tasks: tasks/portainer.yml
+      when: portainer_enable
+
+    - name: Set up GitLab CE
+      ansible.builtin.import_tasks: tasks/gitlab.yml
+      when: gitlab_enable
+

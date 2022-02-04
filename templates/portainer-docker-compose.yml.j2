@@ -1,0 +1,32 @@
+# {{ ansible_managed }}
+---
+version: "3"
+
+services:
+  portainer:
+    privileged: true
+    container_name: portainer
+    image: 'portainer/portainer-ce'
+    hostname: '{{ portainer_hostname }}'
+    ports:
+      - '8100:8000'
+      - '9100:9000'
+    expose:
+      - '8100'
+      - '9100'
+    volumes:
+      - '/home/ben/portainer/data:/data'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    restart: always
+
+  portainer_agent:
+    image: 'portainer/agent'
+    container_name: portainer_agent
+    ports:
+      - "9101:9001"
+    expose:
+      - "9101"
+    restart: always
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - '/var/lib/docker/volumes:/var/lib/docker/volumes'

@@ -1,0 +1,20 @@
+---
+- name: Create mosquitto folder.
+  ansible.builtin.file:
+    path: ~/mosquitto
+    state: directory
+    mode: 0755
+  become: false
+
+- name: Copy mosquitto docker-compose template.
+  ansible.builtin.template:
+    src: templates/mosquitto-docker-compose.yml.j2
+    dest: ~/mosquitto/docker-compose.yml
+    mode: '0640'
+  become: false
+
+- name: Ensure mosquitto is running.
+  community.docker.docker_compose:
+    project_src: ~/mosquitto
+    build: false
+  become: false

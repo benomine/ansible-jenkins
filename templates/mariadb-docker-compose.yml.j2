@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+---
+version: "3"
+
+services:
+  mariadb:
+    image: 'jc21/mariadb-aria:latest'
+    hostname: '{{ mariadb_hostname }}
+    container_name: mariadb
+    ports:
+      - "6306:3306"
+    expose:
+      - "6306"
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD="npm"
+      - MYSQL_DATABASE="npm"
+      - MYSQL_USER="npm"
+      - MYSQL_PASSWORD="npm"
+    volumes:
+      - ./data/mysql:/var/lib/mysql

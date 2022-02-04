@@ -1,0 +1,16 @@
+# {{ ansible_managed }}
+---
+version: "3"
+
+services:
+  nodered:
+    container_name: nodered
+    privileged: true
+    image: nodered/node-red
+    volumes:
+      - '/home/ben/node-red:/data'
+    ports:
+      - "1880:1880"
+    expose:
+      - 1880
+    hostname: '{{ nodered_hostname }}'
